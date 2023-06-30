@@ -50,8 +50,8 @@ export default {
       <div class="tag" v-for="tag in tags" :key="tag.id">
         {{ tag }}
         <img
-          width="40"
-          height="40"
+          width="30"
+          height="30"
           src="https://img.icons8.com/stickers/100/x.png"
           alt="x"
           @click="deleteTag(tag)"
@@ -86,7 +86,7 @@ export default {
   flex-direction: row;
 }
 .tag {
-  font-size: 50px;
+  font-size: 30px;
   margin: 10px;
   padding: 10px;
   display: flex;
@@ -111,7 +111,7 @@ export default {
   color: #000000;
   border: none;
   outline: 0px;
-  font-size: 70px;
+  font-size: 40px;
 }
 .form .label {
   position: absolute;
