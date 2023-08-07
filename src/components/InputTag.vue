@@ -1,80 +1,47 @@
-<script>
-import { gsap } from "gsap";
-
-export default {
-  name: "InputTag",
-  data() {
-    return {
-      currentValue: "",
-      tags: [], //SE CREA LAS ETIQUETAS ACA Y SE RENDERIZA EN "tags"
-    };
-  },
-  methods: {
-    //CUANDO PRECIONADO ENTER INGRESAR EN CURRENTVALUE A LA LISTA DE TAGS
-    handleSubmit() {
-      if (this.currentValue !== "") {
-        // Const para no se repitir tags
-        const exist = this.tags.some((item) => item === this.currentValue);
-        if (!exist) {
-          this.animacionUp();
-          this.tags.push(this.currentValue);
-          this.currentValue = "";
-        }
-      }
-    },
-    deleteTag(tag) {
-      this.tags = this.tags.filter((item) => item !== tag);
-      this.animacionDown();
-    },
-    animacionUp() {
-      gsap.fromTo(
-        ".tag",
-        { opacity: 0, y: -100 },
-        { opacity: 1, y: 0, duration: 1 }
-      );
-    },
-    animacionDown() {
-      gsap.fromTo(
-        ".tag",
-        { opacity: 0, y: 0 },
-        { opacity: 1, y: -20, duration: 1 }
-      );
-    },
-  },
-};
-</script>
-
 <template>
   <div class="inputTag">
     <div class="tags">
-      <div class="tag" v-for="tag in tags" :key="tag.id">
+      <div class="tag" v-for="tag in tagList" :key="tag">
         {{ tag }}
         <img
           width="30"
           height="30"
           src="https://img.icons8.com/stickers/100/x.png"
           alt="x"
-          @click="deleteTag(tag)"
+          @click="onDelete(tag)"
         />
       </div>
     </div>
-    <form class="form" @submit.prevent="handleSubmit">
+    <form class="form" @submit.prevent="onSubmit">
       <input
         type="text"
-        v-model="currentValue"
+        v-model="tagValue"
         placeholder="Escriba una Tag"
         required
       />
-      <label class="label"> </label>
+      <label class="label"></label>
     </form>
   </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import useTagsStore from "../store/tags";
+
+const { tagsValue, tagsList, handleSubmit, handleDelete } = useTagsStore();
+
+const tagList = ref(tagsList);
+const tagValue = ref(tagsValue);
+
+const onSubmit = () => handleSubmit(tagValue, tagList);
+const onDelete = (tag) => handleDelete(tag, tagList);
+</script>
 
 <style scoped>
 .inputTag {
   height: 100vh;
   display: flex;
-  background-color: aquamarine;
+  background-color: rgb(0, 0, 0);
   align-items: center;
   flex-direction: column;
   justify-content: center;
@@ -84,6 +51,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: row;
+  color: white;
 }
 .tag {
   font-size: 30px;
@@ -91,7 +59,7 @@ export default {
   padding: 10px;
   display: flex;
   align-items: center;
-  border: 1px solid black;
+  border: 1px solid rgb(255, 255, 255);
   border-radius: 20px;
 }
 .tag img {
@@ -108,7 +76,7 @@ export default {
   width: 100%;
   height: 100%;
   background: none;
-  color: #000000;
+  color: #ffffff;
   border: none;
   outline: 0px;
   font-size: 40px;
@@ -120,7 +88,7 @@ export default {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
 }
 .form .label:after {
   content: "";
