@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { gsap } from "gsap";
 
 export default defineStore("tags", {
   state: () => ({
@@ -18,20 +19,6 @@ export default defineStore("tags", {
     },
     handleDelete(tag, tagList) {
       return (tagList.value = tagList.value.filter((item) => item !== tag));
-    },
-    animationUp() {
-      gsap.fromTo(
-        ".tag:last-child",
-        { opacity: 0, y: -250 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
-      );
-    },
-    animationDown() {
-      gsap.fromTo(
-        ".tag:last-child",
-        { opacity: 1 },
-        { opacity: 0, y: 250, duration: 0.5, ease: "power2.out" }
-      );
     },
   },
 });
